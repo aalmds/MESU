@@ -1,4 +1,4 @@
-#include "SensorManagement.h"
+#include "Power.h"
 
 using namespace Utils;
 
@@ -12,5 +12,6 @@ void setup(){
 
 void loop(){
     Serial.println("LOOP");
+    delay(500);
     sleep();
 }

@@ -6,8 +6,11 @@
 
     void dataHandler(){
         Reader reader;
+        Serial.println("DATA HANDLER");
+        delay(500);
         String data = reader.readData();
         Sender sender(data);
+        sender.sendData();
     }
     
 #endif
