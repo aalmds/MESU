@@ -1,24 +1,34 @@
 #ifndef MODULE1_DATA_READER 
 #define MODULE1_DATA_READER
 
+  #include <Wire.h>
+  #include <RtcDS3231.h> 
+  #include "Utils.h"
+  
+  RtcDS3231<TwoWire> rtc(Wire);
+  
   using namespace Utils;
 
   class Reader{
     String data;
 
-    String checkError(String level){
-      if(level == "-1"){
+    String checkError(String data){
+      delay(500);
+      if(data != "-1"){
         return " ";
       }
 
       for(int i = 0; i < NUM_SENSOR; ++i){
         for(int j = i; j < NUM_SENSOR; ++j){
           if(sensors[i] && !sensors[j]){
-            level = level + "_Sensor" + sensors[i];
+            data += "_Sensor" + String(i);
             break;
           }
         }
       }
+      delay(500);
+
+      return data;
     }
 
     String checkLevel(){
@@ -39,30 +49,49 @@
     }
 
     void readSensors(){
-      for (int i = 0; i < NUM_SENSOR; ++i){
+      /*for (int i = 0; i < NUM_SENSOR; ++i){
         sensors[i] = digitalRead(SENSOR1 + i);
       }
+      */
     }
 
-    String readDateAndTime(){
-      // Read from RTC
+    /*
+    RtcDateTime readDateAndTime(){
+      rtc.Begin();
+      RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
+
+      if (!rtc.IsDateTimeValid()){
+          rtc.SetDateTime(compiled);
+      } else{
+  
+          RtcDateTime now = rtc.GetDateTime();
+          if (now < compiled){
+            rtc.SetDateTime(compiled);
+          }
+      }
+
+        rtc.Enable32kHzPin(false);
+        rtc.SetSquareWavePin(DS3231SquareWavePin_ModeNone);
+
+        return rtc.GetDateTime();
     }
 
     String readArduinoId(){
       // Arduino ID
-    }
+    }*/
 
     public:
     String readData(){
-      Serial.println("ENTREI");
-      delay(100);
-
-      readSensors;
+      readSensors();
+      delay(500);
       data += checkLevel();
+      delay(500);
       data += checkError(data);
-      data += readDateAndTime();
-      data += readArduinoId();
-
+      delay(500);
+      Serial.println(data);
+      delay(500);
+      /*data += readDateAndTime();
+      data += readArduinoId();*/
       return data;
     }
   };
