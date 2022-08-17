@@ -14,6 +14,7 @@ const int SENSOR4 = 6;
 const int levels[NUM_LEVEL][NUM_SENSOR] = {{0, 0, 1, 1}, {0, 0, 0, 1}, {0, 0, 0, 0}};
 
 int sensors[NUM_SENSOR];
+char data[] = {'0', '1', '1', '1', 0};
 
 SoftwareSerial ss(10, 11);
 SMW_SX1262M0 lorawan(ss);
@@ -28,12 +29,11 @@ const unsigned long PAUSE_TIME = 5000;
 unsigned long timeout;
 
 void setupKora();
-void sendData(String data);
-
-String readData();
+void readData();
 void readSensors();
-String checkLevel();
-String checkError(String data);
+int checkLevel();
+void checkError(int level);
+void sendData();
 
 void setup()
 {
@@ -48,12 +48,9 @@ void setup()
 
 void loop()
 {
-  Serial.println("LOOP");
-  delay(500);
-
-  String data = readData();
-  sendData(data);
-  delay(10000);
+  readData();
+  sendData();
+  delay(60000);
 }
 
 void setupKora()
@@ -134,37 +131,27 @@ void setupKora()
   lorawan.join();
 }
 
-String checkError(String data)
+void checkError(int level)
 {
-  Serial.println("CHECK ERROR");
   delay(500);
-  String error = "";
-  if (data != "-1")
-  {
-    return error;
-  }
-
-  for (int i = 0; i < NUM_SENSOR; ++i)
+  for (int i = 1; i < NUM_SENSOR; ++i)
   {
     for (int j = i; j < NUM_SENSOR; ++j)
     {
       if (sensors[i] && !sensors[j])
       {
         delay(500);
-        error += "_Sensor" + String(i);
+        data[i] = '0';
         break;
       }
     }
   }
   delay(500);
-
-  return error;
 }
 
-String checkLevel()
+int checkLevel()
 {
-  Serial.println("CHECK LEVEL");
-  int level = -1;
+  int level = 3;
   for (int i = 0; i < NUM_LEVEL; ++i)
   {
     int count = 0;
@@ -181,63 +168,56 @@ String checkLevel()
       break;
     }
   }
-  return String(level);
+  return level;
 }
 
 void readSensors()
 {
-  Serial.println("READ SENSORS");
+  // Serial.println("Sensors:");
   for (int i = 0; i < NUM_SENSOR; i++)
   {
     sensors[i] = digitalRead(SENSOR1 + i);
-    // sensors[0] = 0;
     delay(500);
-    Serial.println(sensors[i]);
+    // Serial.println(data[i]);
   }
 }
 
-String readData()
+void readData()
 {
   delay(500);
-  String data;
   readSensors();
 
   delay(500);
-  data += checkLevel();
-  data += checkError(data);
+  data[0] = checkLevel() + '0';
+  checkError(data[0]);
   delay(500);
-
-  return data;
 }
 
-void sendData(String data)
+void sendData()
 {
   if (timeout < millis())
   {
     if (lorawan.isConnected())
     {
-      Serial.print(F("Data: "));
-      Serial.println(data);
+      /*Serial.println("Data: ");
+      for(int i = 0; i < 4; ++i){
+        Serial.println(data[i]);
+      }*/
+
       response = lorawan.sendX(1, data);
       timeout = millis() + PAUSE_TIME;
 
       if (response == CommandResponse::OK)
       {
         Serial.println(F("Message sent"));
-      } else if(response == CommandResponse:: ERROR){
-        Serial.println(F("ERROR"));
-      } else if(response == CommandResponse:: BUSY){
-        Serial.println(F("Busy"));
-      } else if(response == CommandResponse:: NO_NETWORK){
-        Serial.println(F("No network"));
-      }else
+      }
+      else
       {
-        Serial.println(F("Data"));
+        Serial.println(F("Erro in sending message"));
       }
     }
     else
     {
-      Serial.println('.');
       timeout = millis() + 5000;
     }
   }
