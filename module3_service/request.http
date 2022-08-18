@@ -1,0 +1,24 @@
+GET https://connector.koretmdata.com.br/api/v2/organizations/AU915%20-%20LA-915-928A/applications/62c58b2290247a0016c73c38/downlinks
+Authorization: GpSc1jWN8QFCZRL2KVbP4OTlKEcRvQJ
+
+### 
+
+GET https://connector.koretmdata.com.br/api/v2/organizations
+Authorization: GpSc1jWN8QFCZRL2KVbP4OTlKEcRvQJ
+
+### 
+
+POST https://connector.koretmdata.com.br/api/v2/payloadHistories
+Content-Type: application/json
+Authorization: GpSc1jWN8QFCZRL2KVbP4OTlKEcRvQJ
+
+{
+  "devEUIs": [
+    "000516800010c962"
+  ],
+  "period": 48,
+  "type": [
+    "uplink"
+  ],
+  "extension": "JSON"
+}
