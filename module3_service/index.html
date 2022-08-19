@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>MESU - Sistema de Monitoramento de Alagamento</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/">
+
+    <!-- Bootstrap core CSS -->
+    <!--<link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="sticky-footer-navbar.css" rel="stylesheet">
+    
+  </head>
+  <body onload="setup()">
+  
+    <script src="./server.js"></script>
+
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">MESU</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Sensors <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">More Info</a>
+            </li>
+          </ul>
+          
+        </div>
+      </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="container">
+      <h1 class="mt-5">  </h1>
+
+      <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15801.80142602653!2d-34.95133!3d-8.0554591!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x20ceccca91a11dd3!2sCIn%20-%20Centro%20de%20Inform%C3%A1tica%20-%20UFPE!5e0!3m2!1spt-BR!2sbr!4v1660865128941!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        
+      <p class="lead"> <div>
+        <h3>
+            Level: 
+            <span id="level">
+                
+            </span>
+        </h3>
+        <h3>
+            Status: 
+            <span id="status">
+                undefined
+            </span>
+        </h3>
+        <button onclick="updateLevel()">Click me</button>
+    </div>
+    </p>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <script src="../../assets/js/vendor/popper.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
+
+
