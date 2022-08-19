@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var fs = require('fs');
 const https = require('https');
 
 var p = 3000
@@ -88,6 +89,7 @@ function getKoraData(requestData, options) {
                 // console.log(payloadsHistory[i])
                 console.log(payloadsHistory[i])
             }
+            saveData(payloadsHistory);
         });
     });
 
@@ -100,4 +102,18 @@ function getKoraData(requestData, options) {
     });
 }
 
-getKoraData(requestData, options)
+function saveData(data){
+    fs.writeFile("level.json", JSON.stringify(data), function(err) {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("The file was saved!");
+        }
+    })
+}
+
+// getKoraData(requestData, options);
+
+setInterval(() => {
+    getKoraData(requestData, options);
+}, 10000)
