@@ -3,18 +3,19 @@
 #include <Arduino.h>
 #include <avr/sleep.h>
 
-const int NUM_LEVEL = 3;
+const int NUM_LEVEL = 4;
 const int NUM_SENSOR = 4;
+const int INFO = 4;
 
 const int SENSOR1 = 3;
 const int SENSOR2 = 4;
 const int SENSOR3 = 5;
 const int SENSOR4 = 6;
 
-const int levels[NUM_LEVEL][NUM_SENSOR] = {{0, 0, 1, 1}, {0, 0, 0, 1}, {0, 0, 0, 0}};
+const int levels[NUM_LEVEL][NUM_SENSOR] = {{0, 1, 1, 1}, {0, 0, 1, 1}, {0, 0, 0, 1}, {0, 0, 0, 0}};
 
-int sensors[NUM_SENSOR];
-char data[] = {'0', '1', '1', '1', 0};
+int sensors[NUM_SENSOR] = {0, 0, 0, 0};
+char data[INFO];
 
 SoftwareSerial ss(10, 11);
 SMW_SX1262M0 lorawan(ss);
@@ -48,9 +49,18 @@ void setup()
 
 void loop()
 {
+  data[0] = '0';
+  for(int i = 1; i < INFO; ++i){
+    data[i] = '1';
+  }
   readData();
-  sendData();
-  delay(60000);
+  Serial.println("Data: ");
+  for(int i = 0; i < 4; ++i){
+    Serial.println(data[i]);
+  }
+
+  //sendData();
+  delay(5000);
 }
 
 void setupKora()
@@ -130,13 +140,17 @@ void setupKora()
   Serial.println(F("Joining the network"));
   lorawan.join();
 }
+  
+// 0 1 0 0 -> 4 0 1 1 : OK
+// 0 0 1 0 -> 4 1 0 1 : 4 0 0 1
+// 0 1 1 0 -> 4 0 0 1 : OK 
 
 void checkError(int level)
 {
   delay(500);
   for (int i = 1; i < NUM_SENSOR; ++i)
   {
-    for (int j = i; j < NUM_SENSOR; ++j)
+    for (int j = i + 1; j < NUM_SENSOR; ++j)
     {
       if (sensors[i] && !sensors[j])
       {
@@ -151,7 +165,7 @@ void checkError(int level)
 
 int checkLevel()
 {
-  int level = 3;
+  int level = 4;
   for (int i = 0; i < NUM_LEVEL; ++i)
   {
     int count = 0;
@@ -173,12 +187,13 @@ int checkLevel()
 
 void readSensors()
 {
-  // Serial.println("Sensors:");
-  for (int i = 0; i < NUM_SENSOR; i++)
+  Serial.println(data[0]);
+  Serial.println("Sensors:");
+  for (int i = 1; i < NUM_SENSOR; i++)
   {
     sensors[i] = digitalRead(SENSOR1 + i);
     delay(500);
-    // Serial.println(data[i]);
+    Serial.println(sensors[i]);
   }
 }
 
@@ -199,10 +214,10 @@ void sendData()
   {
     if (lorawan.isConnected())
     {
-      /*Serial.println("Data: ");
+      Serial.println("Data: ");
       for(int i = 0; i < 4; ++i){
         Serial.println(data[i]);
-      }*/
+      }
 
       response = lorawan.sendX(1, data);
       timeout = millis() + PAUSE_TIME;
