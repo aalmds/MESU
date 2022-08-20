@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link href="sticky-footer-navbar.css" rel="stylesheet">
+    <link href="../styles/style.css" rel="stylesheet">
     
   </head>
   <body>
@@ -32,10 +33,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Sensors <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="./index.html">Mapeamento dos sensores</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">More Info</a>
+              <a class="nav-link" href="./equipe.html">Equipe</a>
             </li>
           </ul>
           
@@ -46,56 +47,60 @@
     <!-- Begin page content -->
     <main role="main" class="container">
       <h1 class="mt-5">  </h1>
+      <div class="all">
 
-      <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15801.80142602653!2d-34.95133!3d-8.0554591!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x20ceccca91a11dd3!2sCIn%20-%20Centro%20de%20Inform%C3%A1tica%20-%20UFPE!5e0!3m2!1spt-BR!2sbr!4v1660865128941!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        
-      <p class="lead"> <div>
-        <h3>
-            Level: 
-            <span id="level">
-                
-            </span>
-        </h3>
-        <h3>
-            Status: 
-            <span id="status">
-                undefined
-            </span>
-        </h3>
-        <style>
-            .button {
-                border: none;
-                color: white;
-                padding: 8px 16px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                transition-duration: 0.4s;
-                cursor: pointer;
-            }
-            .button1 {
-                background-color: white;
-                color: black;
-                border: 2px solid #1c485c;
-            }
-            .button1:hover {
-                background-color: #3f839b;
-                color: white;
-            }
-        </style>
-        <button class="button button1" onclick="updateLevel()">Update</button>
-
-    </div>
-    </p>
+        <div class="body" >
+          <iframe id="map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15801.80142602653!2d-34.95133!3d-8.0554591!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x20ceccca91a11dd3!2sCIn%20-%20Centro%20de%20Inform%C3%A1tica%20-%20UFPE!5e0!3m2!1spt-BR!2sbr!4v1660865128941!5m2!1spt-BR!2sbr" width="800" height="600" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div>
+            <table id="previousData" class="hide">
+              <tr>
+                <th class="tbHeader">Data</th>
+                <th class="tbHeader">Dado</th>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <p class="lead">
+          <div class="content">
+            <h3>
+              <b>Nível de água: </b>
+              <span id="level">
+                <small>Carregando...</small>
+              </span>
+            </h3>
+            <h3>
+              <b>Estado dos sensores: </b>
+              <span id="status">
+                <small>Carregando...</small>
+              </span>
+            </h3>           
+            <button class="button button1" onclick="showTable()">History</button>
+          </p>
+        </div>
+      </div>
     </main>
 
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-      </div>
-    </footer>
+    
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
