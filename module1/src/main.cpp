@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <avr/sleep.h>
 
-const int NUM_LEVEL = 4;
+const int NUM_LEVEL = 5;
 const int NUM_SENSOR = 4;
 const int INFO = 4;
 
@@ -12,7 +12,13 @@ const int SENSOR2 = 4;
 const int SENSOR3 = 5;
 const int SENSOR4 = 6;
 
-const int levels[NUM_LEVEL][NUM_SENSOR] = {{0, 1, 1, 1}, {0, 0, 1, 1}, {0, 0, 0, 1}, {0, 0, 0, 0}};
+const int levels[NUM_LEVEL][NUM_SENSOR] = {
+  {1, 1, 1, 1}, 
+  {0, 1, 1, 1}, 
+  {0, 0, 1, 1}, 
+  {0, 0, 0, 1}, 
+  {0, 0, 0, 0}
+};
 
 int sensors[NUM_SENSOR] = {0, 0, 0, 0};
 char data[INFO];
@@ -30,6 +36,7 @@ const unsigned long PAUSE_TIME = 5000;
 unsigned long timeout;
 
 void setupKora();
+void resetData();
 void readData();
 void readSensors();
 int checkLevel();
@@ -49,14 +56,11 @@ void setup()
 
 void loop()
 {
-  data[0] = '0';
-  for (int i = 1; i < INFO; ++i)
-  {
-    data[i] = '1';
-  }
+  resetData();
 
   readData();
   sendData();
+
   delay(30000);
 }
 
@@ -134,21 +138,35 @@ void setupKora()
     Serial.println(F("Error on saving"));
   }
 
-  response = lorawan.join();
-  if (response == CommandResponse::OK)
-  {
-    Serial.println(F("Joining the network"));
+  for(int i = 0; i < 20; ++i){
+    response = lorawan.join();
+    if (response == CommandResponse::OK)
+    {
+      Serial.println(F("Joining the network"));
+      break;
+    }
+    else
+    {
+      Serial.println(F("Error on joining the network, trying again"));
+    }
   }
-  else
+
+
+}
+
+void resetData()
+{
+  data[0] = '0';
+  for (int i = 1; i < INFO; ++i)
   {
-    Serial.println(F("Error on joining the network"));
+    data[i] = '1';
   }
 }
 
 void checkError(int level)
 {
   delay(500);
-  for (int i = 1; i < NUM_SENSOR; ++i)
+  for (int i = 0; i < NUM_SENSOR; ++i)
   {
     for (int j = i + 1; j < NUM_SENSOR; ++j)
     {
@@ -165,7 +183,8 @@ void checkError(int level)
 
 int checkLevel()
 {
-  int level = 4;
+  int level = 5; // error level
+
   for (int i = 0; i < NUM_LEVEL; ++i)
   {
     int count = 0;
@@ -187,9 +206,8 @@ int checkLevel()
 
 void readSensors()
 {
-  Serial.println(sensors[0]);
   Serial.println("Sensors:");
-  for (int i = 1; i < NUM_SENSOR; i++)
+  for (int i = 0; i < NUM_SENSOR; i++)
   {
     sensors[i] = digitalRead(SENSOR1 + i);
     delay(500);
@@ -223,7 +241,7 @@ void sendData()
       for (int i = 0; i < 10; ++i)
       {
         response = lorawan.sendX(1, data);
-        // timeout = millis() + PAUSE_TIME;
+        timeout = millis() + PAUSE_TIME;
         if (response == CommandResponse::OK)
         {
           Serial.println(F("Message sent"));
