@@ -50,17 +50,14 @@ void setup()
 void loop()
 {
   data[0] = '0';
-  for(int i = 1; i < INFO; ++i){
+  for (int i = 1; i < INFO; ++i)
+  {
     data[i] = '1';
   }
-  readData();
-  Serial.println("Data: ");
-  for(int i = 0; i < 4; ++i){
-    Serial.println(data[i]);
-  }
 
-  //sendData();
-  delay(5000);
+  readData();
+  sendData();
+  delay(30000);
 }
 
 void setupKora()
@@ -137,13 +134,16 @@ void setupKora()
     Serial.println(F("Error on saving"));
   }
 
-  Serial.println(F("Joining the network"));
-  lorawan.join();
+  response = lorawan.join();
+  if (response == CommandResponse::OK)
+  {
+    Serial.println(F("Joining the network"));
+  }
+  else
+  {
+    Serial.println(F("Error on joining the network"));
+  }
 }
-  
-// 0 1 0 0 -> 4 0 1 1 : OK
-// 0 0 1 0 -> 4 1 0 1 : 4 0 0 1
-// 0 1 1 0 -> 4 0 0 1 : OK 
 
 void checkError(int level)
 {
@@ -187,7 +187,7 @@ int checkLevel()
 
 void readSensors()
 {
-  Serial.println(data[0]);
+  Serial.println(sensors[0]);
   Serial.println("Sensors:");
   for (int i = 1; i < NUM_SENSOR; i++)
   {
@@ -215,25 +215,29 @@ void sendData()
     if (lorawan.isConnected())
     {
       Serial.println("Data: ");
-      for(int i = 0; i < 4; ++i){
+      for (int i = 0; i < 4; ++i)
+      {
         Serial.println(data[i]);
       }
 
-      response = lorawan.sendX(1, data);
-      timeout = millis() + PAUSE_TIME;
-
-      if (response == CommandResponse::OK)
+      for (int i = 0; i < 10; ++i)
       {
-        Serial.println(F("Message sent"));
-      }
-      else
+        response = lorawan.sendX(1, data);
+        // timeout = millis() + PAUSE_TIME;
+        if (response == CommandResponse::OK)
+        {
+          Serial.println(F("Message sent"));
+          break;
+        }
+        else
+        {
+          Serial.println(F("Error in sending message, trying to join again"));
+          lorawan.join();
+        }
+      }}
+       else
       {
-        Serial.println(F("Erro in sending message"));
+        timeout = millis() + PAUSE_TIME;
       }
-    }
-    else
-    {
-      timeout = millis() + 5000;
     }
   }
-}
