@@ -163,7 +163,7 @@ void resetData()
   }
 }
 
-void checkError(int level)
+void checkError()
 {
   delay(500);
   for (int i = 0; i < NUM_SENSOR; ++i)
