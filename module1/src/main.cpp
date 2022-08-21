@@ -222,7 +222,7 @@ void readData()
 
   delay(500);
   data[0] = checkLevel() + '0';
-  checkError(data[0]);
+  checkError();
   delay(500);
 }
 
