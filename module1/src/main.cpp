@@ -40,7 +40,7 @@ void resetData();
 void readData();
 void readSensors();
 int checkLevel();
-void checkError(int level);
+void checkError();
 void sendData();
 
 void setup()
