@@ -94,7 +94,8 @@ async function mapToTable() {
 
 function translateLevel(level) {
   const levelMap = {
-    '0': 'Seco',
+    '0': 'Muito Baixo - abaixo de 5 cm',
+
     '1': 'Muito baixo - cerca de 5 cm',
     '2': 'Baixo - cerca de 22 cm',
     '3': 'Alto - cerca de 38 cm',
