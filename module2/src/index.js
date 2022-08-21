@@ -98,7 +98,8 @@ function translateLevel(level) {
 
     '1': 'Baixo - cerca de 5 cm',
 
-    '2': 'Baixo - cerca de 22 cm',
+    '2': 'Médio - cerca de 15 cm',
+
     '3': 'Alto - cerca de 38 cm',
     '4': 'Muito alto -  cerca de 48 cm',
     '5': 'Erro'
