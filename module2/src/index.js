@@ -55,9 +55,9 @@ function parsePayloadResponse(data) {
   console.info(converted)
   var obj = {
     'level': converted[0],
-    'sensor1_status': converted[1],
-    'sensor2_status': converted[2],
-    'sensor3_status': converted[3]
+    'sensor_status' : converted.slice(1)
+    // 'level': 'Erro',
+    // 'sensor_status' : [0,1,1]
   }
 
   return obj
@@ -116,17 +116,31 @@ async function updateWaterLevel() {
   let level = translateLevel(lastData.level)
   levelElement.innerText = level 
   let statusElement = document.getElementById('status')
+
   if(level == 'Erro') {
-    statusElement.innerText = 'Erro no '
-    if(lastData.sensor1_status == '0') {
-      statusElement.innerText += 'sensor 1'
-    } 
-    if(lastData.sensor2_status == '0') {
-      statusElement.innerText += 'sensor 2'
+    let sensor_error = [];
+    let errorMsg = 'Erro ';
+    
+    for (var idx = 0; idx < lastData.sensor_status.length; idx++){
+      if (lastData.sensor_status[idx] == '0'){
+        sensor_error.push(idx+1);
+      }
     }
-    if(lastData.sensor3_status == '0') {
-      statusElement.innerText += 'sensor 3'
+
+    errorMsg += (sensor_error.length == 1 ? 'no sensor ': 'nos sensores ');
+
+    for (var s = 0; s < sensor_error.length; s++){
+      errorMsg += sensor_error[s];
+      if (s == sensor_error.length - 2){
+        errorMsg += ' e ';
+      }
+      else if (s != sensor_error.length-1){
+        errorMsg += ', ';
+      }
     }
+
+    statusElement.innerText = errorMsg;
+
   }else {
     statusElement.innerText = 'Ok'
   }
