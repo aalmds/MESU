@@ -1,0 +1,117 @@
+body {
+  text-align: center;
+  background-color:#cad2dc;
+  font-family: 'Roboto', sans-serif;
+}
+
+table {
+  border-spacing: 1;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+  display: none;
+}
+
+table * {
+  position: auto;
+}
+
+table td,
+table th {
+  padding-left: 8px;
+}
+
+table thead tr {
+  height: 60px;
+  background: #1d4fa7;
+}
+
+table tbody tr {
+  height: 50px;
+}
+
+.tbHeader {
+  background-color: rgb(42, 55, 69);
+  color: whitesmoke;
+  text-align: center;
+}
+.show {
+  display: inline;
+}
+.hide {
+  display: none;
+}
+table tbody tr:last-child {
+  border: 0;
+}
+
+table td,
+table th {
+  text-align: left;
+  border: solid thin;
+  border-color: rgb(14, 14, 79);
+}
+
+table td.l,
+table th.l {
+  text-align: right;
+}
+
+table td.c,
+table th.c {
+  text-align: center;
+}
+
+table td.r,
+table th.r {
+  text-align: center;
+}
+
+#map{
+  margin-top: 5rem;
+}
+
+h3 {
+  color: rgb(42, 55, 69);
+}
+
+.body {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: auto;
+}
+
+.all,
+.content{
+  justify-content: center;
+  align-items: center;
+}
+
+#previousData,
+.content{
+  margin: 2rem;
+}
+
+.button {
+  border: none;
+  color: rgb(188, 215, 212);
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.button1 {
+  background-color: #cad2dc;
+  color: rgb(30, 43, 57);
+  border: 2px solid #1c485c;
+  border-radius: 5px;
+}
+.button1:hover {
+  background-color: #95bbc9;
+}
